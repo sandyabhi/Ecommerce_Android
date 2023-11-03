@@ -3,31 +3,59 @@ import {
   Text,
   View,
   SafeAreaView,
+  Pressable,
   Image,
   KeyboardAvoidingView,
   TextInput,
-  Pressable,
+  Alert,
 } from "react-native";
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import axios from "axios";
 
-const LoginScreen = () => {
+const RegisterScreen = () => {
   const navigation = useNavigation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [name, setName] = useState("");
 
-  useEffect(() => {
-    const checkLoginStatus = () => {};
-  }, []);
+  const handleRegister = () => {
+    const user = {
+      name: name,
+      email: email,
+      password: password,
+    };
 
-  const handleLogin = () => {};
+    // Send a POST request to the backend
+    axios
+      .post("http://localhost:8000/api/user", user)
+      .then((res) => {
+        console.log(res);
+
+        Alert.alert("Registration Successful");
+
+        setName("");
+        setPassword("");
+        setEmail("");
+      })
+      .catch((error) => {
+        Alert.alert("Registration Failed");
+        console.log(error);
+      });
+  };
 
   return (
     <SafeAreaView
-      style={{ flex: 1, backgroundColor: "white", alignItems: "center" }}
+      style={{
+        flex: 1,
+        backgroundColor: "white",
+        alignItems: "center",
+        paddingTop: 16,
+      }}
     >
       <View>
         <Image
@@ -39,15 +67,15 @@ const LoginScreen = () => {
       </View>
 
       <KeyboardAvoidingView>
-        <View>
+        <View style={{ alignItems: "center" }}>
           <Text
             style={{
               fontSize: 17,
               fontWeight: "bold",
-              marginTop: 12,
+              color: "#041E42",
             }}
           >
-            Log In to your Account
+            Register to your Account
           </Text>
         </View>
 
@@ -56,7 +84,36 @@ const LoginScreen = () => {
             style={{
               flexDirection: "row",
               alignItems: "center",
-              color: "black",
+              gap: 5,
+              backgroundColor: "#D0D0D0",
+              paddingVertical: 5,
+              borderRadius: 5,
+              marginTop: 30,
+            }}
+          >
+            <Ionicons
+              name="ios-person"
+              size={24}
+              color="gray"
+              style={{ marginLeft: 8 }}
+            />
+            <TextInput
+              value={name}
+              onChangeText={(text) => setName(text)}
+              style={{
+                color: "gray",
+                marginVertical: 10,
+                width: 300,
+                fontSize: name ? 16 : 16,
+              }}
+              placeholder="Enter your name"
+            />
+          </View>
+
+          <View
+            style={{
+              flexDirection: "row",
+              alignItems: "center",
               gap: 5,
               backgroundColor: "#D0D0D0",
               paddingVertical: 5,
@@ -74,13 +131,18 @@ const LoginScreen = () => {
             <TextInput
               value={email}
               onChangeText={(text) => setEmail(text)}
-              style={{ color: "gray", marginVertical: 10, width: 300 }}
+              style={{
+                color: "gray",
+                marginVertical: 10,
+                width: 300,
+                fontSize: password ? 16 : 16,
+              }}
               placeholder="Enter your Email"
             />
           </View>
         </View>
 
-        <View style={{ marginTop: 10 }}>
+        <View>
           <View
             style={{
               flexDirection: "row",
@@ -107,32 +169,17 @@ const LoginScreen = () => {
                 color: "gray",
                 marginVertical: 10,
                 width: 300,
-                fontSize: password ? 16 : 16,
+                fontSize: email ? 16 : 16,
               }}
               placeholder="Enter your Password"
             />
           </View>
         </View>
 
-        <View
-          style={{
-            marginTop: 12,
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-between",
-          }}
-        >
-          <Text>Keep me logged in</Text>
-
-          <Text style={{ color: "#007FFF", fontWeight: "500" }}>
-            Forgot Password
-          </Text>
-        </View>
-
         <View style={{ marginTop: 80 }} />
 
         <Pressable
-          onPress={handleLogin}
+          onPress={handleRegister}
           style={{
             width: 200,
             backgroundColor: "#FEBE10",
@@ -150,16 +197,16 @@ const LoginScreen = () => {
               fontWeight: "bold",
             }}
           >
-            Login
+            Register
           </Text>
         </Pressable>
 
         <Pressable
-          onPress={() => navigation.navigate("Register")}
+          onPress={() => navigation.goBack()}
           style={{ marginTop: 15 }}
         >
           <Text style={{ textAlign: "center", color: "gray", fontSize: 16 }}>
-            Don't have an account? Sign Up
+            Already have an account? Sign In
           </Text>
         </Pressable>
       </KeyboardAvoidingView>
@@ -167,4 +214,6 @@ const LoginScreen = () => {
   );
 };
 
-export default LoginScreen;
+export default RegisterScreen;
+
+const styles = StyleSheet.create({});

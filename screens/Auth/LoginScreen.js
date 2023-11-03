@@ -3,25 +3,61 @@ import {
   Text,
   View,
   SafeAreaView,
-  Pressable,
   Image,
   KeyboardAvoidingView,
   TextInput,
+  Pressable,
+  Alert,
 } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { MaterialIcons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
-import { Ionicons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import axios from "axios";
 
-const RegisterScreen = () => {
+const LoginScreen = () => {
   const navigation = useNavigation();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [name, setName] = useState("");
 
-  const handleRegister = () => {};
+  useEffect(() => {
+    const checkLoginStatus = async () => {
+      try {
+        const token = await AsyncStorage.getItem("authToken");
+
+        if (token) {
+          navigation.replace("Main");
+        }
+      } catch (err) {
+        console.log("error message", err);
+      }
+    };
+
+    checkLoginStatus();
+  }, []);
+
+  const handleLogin = () => {
+    const user = {
+      email: email,
+      password: password,
+    };
+
+    axios
+      .post("http://localhost:8000/api/user/login", user)
+      .then((response) => {
+        console.log(response);
+        const token = response.data.token;
+        console.log(token, "=-=-");
+        AsyncStorage.setItem("authToken", token);
+        navigation.replace("Main");
+      })
+      .catch((error) => {
+        Alert.alert("Login Error", "Invalid Email");
+        console.log(error);
+      });
+  };
 
   return (
     <SafeAreaView
@@ -29,7 +65,7 @@ const RegisterScreen = () => {
         flex: 1,
         backgroundColor: "white",
         alignItems: "center",
-        marginTop: 50,
+        paddingTop: 16,
       }}
     >
       <View>
@@ -42,54 +78,24 @@ const RegisterScreen = () => {
       </View>
 
       <KeyboardAvoidingView>
-        <View style={{ alignItems: "center" }}>
+        <View>
           <Text
             style={{
               fontSize: 17,
               fontWeight: "bold",
               marginTop: 12,
-              color: "#041E42",
             }}
           >
-            Register to your Account
+            Log In to your Account
           </Text>
         </View>
 
-        <View style={{ marginTop: 70 }}>
+        <View>
           <View
             style={{
               flexDirection: "row",
               alignItems: "center",
-              gap: 5,
-              backgroundColor: "#D0D0D0",
-              paddingVertical: 5,
-              borderRadius: 5,
-              marginTop: 30,
-            }}
-          >
-            <Ionicons
-              name="ios-person"
-              size={24}
-              color="gray"
-              style={{ marginLeft: 8 }}
-            />
-            <TextInput
-              value={name}
-              onChangeText={(text) => setName(text)}
-              style={{
-                color: "gray",
-                marginVertical: 10,
-                width: 300,
-                fontSize: name ? 16 : 16,
-              }}
-              placeholder="Enter your name"
-            />
-          </View>
-
-          <View
-            style={{
-              flexDirection: "row",
-              alignItems: "center",
+              color: "black",
               gap: 5,
               backgroundColor: "#D0D0D0",
               paddingVertical: 5,
@@ -107,18 +113,13 @@ const RegisterScreen = () => {
             <TextInput
               value={email}
               onChangeText={(text) => setEmail(text)}
-              style={{
-                color: "gray",
-                marginVertical: 10,
-                width: 300,
-                fontSize: password ? 16 : 16,
-              }}
+              style={{ color: "gray", marginVertical: 10, width: 300 }}
               placeholder="Enter your Email"
             />
           </View>
         </View>
 
-        <View>
+        <View style={{ marginTop: 10 }}>
           <View
             style={{
               flexDirection: "row",
@@ -145,7 +146,7 @@ const RegisterScreen = () => {
                 color: "gray",
                 marginVertical: 10,
                 width: 300,
-                fontSize: email ? 16 : 16,
+                fontSize: password ? 16 : 16,
               }}
               placeholder="Enter your Password"
             />
@@ -170,7 +171,7 @@ const RegisterScreen = () => {
         <View style={{ marginTop: 80 }} />
 
         <Pressable
-          onPress={handleRegister}
+          onPress={handleLogin}
           style={{
             width: 200,
             backgroundColor: "#FEBE10",
@@ -188,16 +189,16 @@ const RegisterScreen = () => {
               fontWeight: "bold",
             }}
           >
-            Register
+            Login
           </Text>
         </Pressable>
 
         <Pressable
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate("Register")}
           style={{ marginTop: 15 }}
         >
           <Text style={{ textAlign: "center", color: "gray", fontSize: 16 }}>
-            Already have an account? Sign In
+            Don't have an account? Sign Up
           </Text>
         </Pressable>
       </KeyboardAvoidingView>
@@ -205,6 +206,4 @@ const RegisterScreen = () => {
   );
 };
 
-export default RegisterScreen;
-
-const styles = StyleSheet.create({});
+export default LoginScreen;
