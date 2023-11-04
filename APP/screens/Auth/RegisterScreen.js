@@ -43,8 +43,8 @@ const RegisterScreen = () => {
         setEmail("");
       })
       .catch((error) => {
-        Alert.alert("Registration Failed");
         console.log(error);
+        Alert.alert("Registration Failed");
       });
   };
 

@@ -44,8 +44,14 @@ const LoginScreen = () => {
       password: password,
     };
 
+    console.log("-=-=-");
+    // const res = await axios.post(
+    //   "http://192.168.43.49:3000/api/user/login",
+    //   user
+    // );
+    // console.log(res.json());
     axios
-      .post("http://localhost:8000/api/user/login", user)
+      .post("http://10.0.2.2:8000/api/user/login", user)
       .then((response) => {
         console.log(response);
         const token = response.data.token;
