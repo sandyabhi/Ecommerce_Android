@@ -25,6 +25,7 @@ import { list } from "../constants/list";
 import { deals, offers } from "../constants/items";
 import ProductItem from "../components/ProductItem";
 import { UserType } from "../context/UserContext";
+import SearchBar from "../components/SearchBar";
 // import UserType from "../context/UserContext";
 
 const HomeScreen = () => {
@@ -111,43 +112,12 @@ const HomeScreen = () => {
     <>
       <SafeAreaView
         style={{
-          paddingTop: 40,
           flex: 1,
           backgroundColor: "white",
         }}
       >
         <ScrollView>
-          <View
-            style={{
-              backgroundColor: "#00CED1",
-              padding: 10,
-              flexDirection: "row",
-              alignItems: "center",
-            }}
-          >
-            <Pressable
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginHorizontal: 7,
-                gap: 10,
-                backgroundColor: "white",
-                borderRadius: 3,
-                height: 38,
-                flex: 1,
-              }}
-            >
-              <AntDesign
-                style={{ paddingLeft: 10 }}
-                name="search1"
-                size={22}
-                color="black"
-              />
-              <TextInput placeholder="Search Amazon.in" />
-            </Pressable>
-
-            <Feather name="mic" size={24} color="black" />
-          </View>
+          <SearchBar />
           <Pressable
             onPress={() => setModalVisible(!modalVisible)}
             style={{
@@ -204,15 +174,6 @@ const HomeScreen = () => {
             ))}
           </ScrollView>
 
-          {/* <SliderBox
-            images={images}
-            autoPlay
-            circleLoop
-            dotColor={"#13274F"}
-            inactiveDotColor="#90A4AE"
-            ImageComponentStyle={{ width: "100%" }}
-          /> */}
-
           <Text style={{ padding: 10, fontSize: 18, fontWeight: "bold" }}>
             Trending Deals of the week
           </Text>
@@ -222,6 +183,7 @@ const HomeScreen = () => {
               flexDirection: "row",
               alignItems: "center",
               flexWrap: "wrap",
+              justifyContent: "center",
             }}
           >
             {deals.map((item, index) => (
@@ -341,7 +303,7 @@ const HomeScreen = () => {
                 marginBottom: open ? 120 : 15,
               }}
               open={open}
-              value={category} //genderValue
+              value={category}
               items={items}
               setOpen={setOpen}
               setValue={setCategory}
@@ -360,6 +322,7 @@ const HomeScreen = () => {
               flexDirection: "row",
               alignItems: "center",
               flexWrap: "wrap",
+              justifyContent: "center",
             }}
           >
             {products

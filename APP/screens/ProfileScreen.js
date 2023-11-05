@@ -71,11 +71,7 @@ const ProfileScreen = () => {
     fetchUserProfile();
   }, []);
 
-  const logout = () => {
-    clearAuthToken();
-  };
-
-  const clearAuthToken = async () => {
+  const logout = async () => {
     await AsyncStorage.removeItem("authToken");
     console.log("auth token cleared");
     navigation.replace("Login");
@@ -134,7 +130,7 @@ const ProfileScreen = () => {
             flex: 1,
           }}
         >
-          <Text style={{ textAlign: "center" }}>Your Account</Text>
+          <Text style={{ textAlign: "center" }}>Settings</Text>
         </Pressable>
       </View>
 
@@ -146,17 +142,6 @@ const ProfileScreen = () => {
           marginTop: 12,
         }}
       >
-        <Pressable
-          style={{
-            padding: 10,
-            backgroundColor: "#E0E0E0",
-            borderRadius: 25,
-            flex: 1,
-          }}
-        >
-          <Text style={{ textAlign: "center" }}>Buy Again</Text>
-        </Pressable>
-
         <Pressable
           onPress={logout}
           style={{
@@ -190,11 +175,28 @@ const ProfileScreen = () => {
             >
               {/* Render the order information here */}
               {order.products.slice(0, 1)?.map((product) => (
-                <View style={{ marginVertical: 10 }} key={product._id}>
+                <View
+                  style={{
+                    marginHorizontal: 10,
+                    marginVertical: 10,
+                    justifyContent: "center",
+                    alignItems: "center",
+                  }}
+                  key={product._id}
+                >
                   <Image
                     source={{ uri: product.image }}
                     style={{ width: 100, height: 100, resizeMode: "contain" }}
                   />
+                  <Text numberOfLines={1} style={{ width: 150, marginTop: 10 }}>
+                    {product?.name}
+                  </Text>
+
+                  <Text
+                    style={{ paddingTop: 5, fontSize: 15, fontWeight: "bold" }}
+                  >
+                    ${product?.price}
+                  </Text>
                 </View>
               ))}
             </Pressable>

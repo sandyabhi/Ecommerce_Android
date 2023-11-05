@@ -220,20 +220,20 @@ const ConfirmationScreen = () => {
                     }}
                   >
                     <Text style={{ fontSize: 15, fontWeight: "bold" }}>
-                      {item?.name}
+                      Name : {item?.name}
                     </Text>
                     <Entypo name="location-pin" size={24} color="red" />
                   </View>
 
                   <Text style={{ fontSize: 15, color: "#181818" }}>
-                    {item.city}
+                    City : {item.city}
                   </Text>
 
                   <Text style={{ fontSize: 15, color: "#181818" }}>
-                    phone No : {item.phone}
+                    Phone No : {item.phone}
                   </Text>
                   <Text style={{ fontSize: 15, color: "#181818" }}>
-                    pin code : {item?.pinCode}
+                    Pin code : {item?.pinCode}
                   </Text>
 
                   <View
@@ -537,7 +537,7 @@ const ConfirmationScreen = () => {
               <Text
                 style={{ color: "#C60C30", fontSize: 17, fontWeight: "bold" }}
               >
-                ₹{total}
+                ${total}
               </Text>
             </View>
           </View>
@@ -554,7 +554,7 @@ const ConfirmationScreen = () => {
             <Text style={{ fontSize: 16, color: "gray" }}>Pay With</Text>
 
             <Text style={{ fontSize: 16, fontWeight: "600", marginTop: 7 }}>
-              Pay on delivery (Cash)
+              Cash on Delivery
             </Text>
           </View>
 

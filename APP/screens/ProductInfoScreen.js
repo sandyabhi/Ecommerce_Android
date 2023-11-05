@@ -4,7 +4,6 @@ import {
   View,
   ScrollView,
   Pressable,
-  TextInput,
   ImageBackground,
   Dimensions,
 } from "react-native";
@@ -15,6 +14,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useDispatch, useSelector } from "react-redux";
 import { addToCart } from "../context/CartReducer";
+import SearchBar from "../components/SearchBar";
 
 const ProductInfoScreen = () => {
   const route = useRoute();
@@ -37,45 +37,15 @@ const ProductInfoScreen = () => {
   };
 
   const cart = useSelector((state) => state.cart.cart);
+
   console.log(cart);
 
   return (
     <ScrollView
-      style={{ marginTop: 55, flex: 1, backgroundColor: "white" }}
+      style={{ flex: 1, backgroundColor: "white" }}
       showsVerticalScrollIndicator={false}
     >
-      <View
-        style={{
-          backgroundColor: "#00CED1",
-          padding: 10,
-          flexDirection: "row",
-          alignItems: "center",
-        }}
-      >
-        <Pressable
-          style={{
-            flexDirection: "row",
-            alignItems: "center",
-            marginHorizontal: 7,
-            gap: 10,
-            backgroundColor: "white",
-            borderRadius: 3,
-            height: 38,
-            flex: 1,
-          }}
-        >
-          <AntDesign
-            style={{ paddingLeft: 10 }}
-            name="search1"
-            size={22}
-            color="black"
-          />
-          <TextInput placeholder="Search Amazon.in" />
-        </Pressable>
-
-        <Feather name="mic" size={24} color="black" />
-      </View>
-
+      <SearchBar />
       <ScrollView horizontal showsHorizontalScrollIndicator={false}>
         {route.params.carouselImages.map((item, index) => (
           <ImageBackground
@@ -159,7 +129,7 @@ const ProductInfoScreen = () => {
         </Text>
 
         <Text style={{ fontSize: 18, fontWeight: "600", marginTop: 6 }}>
-          ₹{route?.params?.price}
+          ${route?.params?.price}
         </Text>
       </View>
 
@@ -183,7 +153,7 @@ const ProductInfoScreen = () => {
 
       <View style={{ padding: 10 }}>
         <Text style={{ fontSize: 15, fontWeight: "bold", marginVertical: 5 }}>
-          Total : ₹{route.params.price}
+          Total : ${route.params.price}
         </Text>
         <Text style={{ color: "#00CED1" }}>
           FREE delivery Tomorrow by 3 PM.Order within 10hrs 30 mins
@@ -196,13 +166,7 @@ const ProductInfoScreen = () => {
             alignItems: "center",
             gap: 5,
           }}
-        >
-          <Ionicons name="location" size={24} color="black" />
-
-          <Text style={{ fontSize: 15, fontWeight: "500" }}>
-            Deliver To USer - Address
-          </Text>
-        </View>
+        ></View>
       </View>
 
       <Text style={{ color: "green", marginHorizontal: 10, fontWeight: "500" }}>

@@ -76,7 +76,7 @@ const StackNavigator = () => {
   return (
     <NavigationContainer>
       <Stack.Navigator>
-        <Stack.Screen
+        {/* <Stack.Screen
           name="Login"
           component={LoginScreen}
           options={{ headerShown: false }}
@@ -85,7 +85,7 @@ const StackNavigator = () => {
           name="Register"
           component={RegisterScreen}
           options={{ headerShown: false }}
-        />
+        /> */}
 
         <Stack.Screen
           name="Main"
