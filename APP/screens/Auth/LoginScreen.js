@@ -51,12 +51,12 @@ const LoginScreen = () => {
     // );
     // console.log(res.json());
     axios
-      .post("http://10.0.2.2:8000/api/user/login", user)
+      .post("http://localhost:8000/api/user/login", user)
       .then((response) => {
         console.log(response);
         const token = response.data.token;
         console.log(token, "=-=-");
-        AsyncStorage.setItem("authToken", token);
+        AsyncStorage.setItem("authToken", JSON.stringify(token));
         navigation.replace("Main");
       })
       .catch((error) => {

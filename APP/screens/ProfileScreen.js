@@ -10,15 +10,16 @@ import React, { useLayoutEffect, useEffect, useContext, useState } from "react";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import axios from "axios";
-// import { UserType } from "../UserContext";
+import { UserType } from "../context/UserContext";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const ProfileScreen = () => {
-  // const { userId, setUserId } = useContext(UserType);
+  const { userId, setUserId } = useContext(UserType);
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
 
   const navigation = useNavigation();
+
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "",
@@ -52,7 +53,54 @@ const ProfileScreen = () => {
 
   const [user, setUser] = useState();
 
+  useEffect(() => {
+    const fetchUserProfile = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/user/profile/${userId.userId}`
+        );
+        // console.log(response.json());
+        const { user } = response.data;
+        console.log(response.data);
+        setUser(user);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+
+    fetchUserProfile();
+  }, []);
+
+  const logout = () => {
+    clearAuthToken();
+  };
+
+  const clearAuthToken = async () => {
+    await AsyncStorage.removeItem("authToken");
+    console.log("auth token cleared");
+    navigation.replace("Login");
+  };
+
+  useEffect(() => {
+    const fetchOrders = async () => {
+      try {
+        const response = await axios.get(
+          `http://localhost:8000/api/order/${userId.userId}`
+        );
+        const orders = response.data.orders;
+        setOrders(orders);
+
+        setLoading(false);
+      } catch (error) {
+        console.log("error", error);
+      }
+    };
+
+    fetchOrders();
+  }, []);
+
   console.log("orders", orders);
+
   return (
     <ScrollView style={{ padding: 10, flex: 1, backgroundColor: "white" }}>
       <Text style={{ fontSize: 16, fontWeight: "bold" }}>
@@ -141,14 +189,14 @@ const ProfileScreen = () => {
               key={order._id}
             >
               {/* Render the order information here */}
-              {/* {order.products.slice(0, 1)?.map((product) => (
+              {order.products.slice(0, 1)?.map((product) => (
                 <View style={{ marginVertical: 10 }} key={product._id}>
                   <Image
                     source={{ uri: product.image }}
                     style={{ width: 100, height: 100, resizeMode: "contain" }}
                   />
                 </View>
-              ))} */}
+              ))}
             </Pressable>
           ))
         ) : (

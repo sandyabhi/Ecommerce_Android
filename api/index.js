@@ -8,6 +8,7 @@ const cors = require("cors");
 const connectDB = require("./config/db");
 
 const userRoutes = require("./routes/userRoutes");
+const orderRoutes = require("./routes/orderRoutes");
 
 const app = express();
 app.use(cors());
@@ -20,6 +21,7 @@ app.use(bodyParser.json());
 //------------------------------------------
 
 app.use("/api/user", userRoutes);
+app.use("/api/order", orderRoutes);
 
 //------------------------------------------
 

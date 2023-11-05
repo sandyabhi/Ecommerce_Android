@@ -151,9 +151,6 @@ const CartScreen = () => {
                   }}
                 />
                 <Text style={{ color: "green" }}>In Stock</Text>
-                {/* <Text style={{ fontWeight: "500", marginTop: 6 }}>
-                  {item?.rating?.rate} ratings
-                </Text> */}
               </View>
             </Pressable>
 
